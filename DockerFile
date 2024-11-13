@@ -1,0 +1,18 @@
+# Use Alpine Linux as base image
+FROM alpine:latest
+
+# Install dependencies
+RUN apk update && apk add --no-cache ca-certificates curl
+
+# Copy internal certificate into the image
+COPY internal.crt /usr/local/share/ca-certificates/
+
+# Import internal certificate
+RUN update-ca-certificates
+
+# Set working directory and add your app files
+WORKDIR /app
+COPY . /app
+
+# Define your entrypoint
+CMD ["/bin/sh"]
